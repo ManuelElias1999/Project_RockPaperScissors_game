@@ -190,27 +190,28 @@
 				"inputs": [
 					{
 						"indexed": false,
-						"internalType": "address",
-						"name": "player",
-						"type": "address"
-					},
-					{
-						"indexed": false,
 						"internalType": "uint256",
 						"name": "gameId",
 						"type": "uint256"
 					},
 					{
 						"indexed": false,
-						"internalType": "enum RockPaperScissors.Move",
-						"name": "playerMove",
-						"type": "uint8"
-					},
+						"internalType": "address",
+						"name": "player1",
+						"type": "address"
+					}
+				],
+				"name": "GameCreated",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
 					{
 						"indexed": false,
-						"internalType": "enum RockPaperScissors.Move",
-						"name": "contractMove",
-						"type": "uint8"
+						"internalType": "uint256",
+						"name": "gameId",
+						"type": "uint256"
 					},
 					{
 						"indexed": false,
@@ -223,6 +224,50 @@
 						"internalType": "string",
 						"name": "result",
 						"type": "string"
+					}
+				],
+				"name": "GameFinished",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "gameId",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "player2",
+						"type": "address"
+					}
+				],
+				"name": "GameJoined",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "gameId",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "player",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "enum RockPaperScissors.Move",
+						"name": "move",
+						"type": "uint8"
 					}
 				],
 				"name": "GamePlayed",
@@ -311,6 +356,19 @@
 			},
 			{
 				"inputs": [],
+				"name": "createGame",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "gameId",
 				"outputs": [
 					{
@@ -366,6 +424,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_gameId",
+						"type": "uint256"
+					}
+				],
+				"name": "joinGame",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "name",
 				"outputs": [
@@ -418,7 +489,20 @@
 						"type": "uint256"
 					}
 				],
-				"name": "play",
+				"name": "playAgainstMachine",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_move",
+						"type": "uint256"
+					}
+				],
+				"name": "playGame",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -850,11 +934,11 @@
 			]
 		},
 		"contracts/game.sol": {
-			"keccak256": "0x3bbf1d4116fd057045dbd9a453a7d1e2025a61645cd80fded84f952a8ff6fceb",
+			"keccak256": "0xe1f14d2813d1cd1bc231d2bef245bb0b291f4ba7e234c171f042146452659027",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://a3445fe5fe13d190f613002c9ef610cb0ad6366086f18d5d0a88767c4cab0c9f",
-				"dweb:/ipfs/QmeMTczMRDBR2NmeDhvE3MSWdpvvoUj1KwyMg2Byhe1Kub"
+				"bzz-raw://38adf10bb8e685b585781b6921008fdf09017239db3a841a0138aaf2e6965abf",
+				"dweb:/ipfs/QmeEfSi8Xg4s6KbbRbG5BuRsJ8nmNU5kQvRcDnyiHeiN9n"
 			]
 		}
 	},
