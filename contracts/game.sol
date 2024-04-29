@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import "./Rock.sol";
+import "./Paper.sol";
+import "./Scissor.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
@@ -18,13 +21,22 @@ contract RockPaperScissors is ERC721, Ownable {
     mapping(uint256 => Game) private games;
     uint256 public gameId = 1;
 
+    Rock public rockToken;
+    Paper public paperToken;
+    Scissor public scissorToken;
+
     event GameCreated(uint256 gameId, address player1);
     event GameJoined(uint256 gameId, address player2);
     event GamePlayed(uint256 gameId, address player, Move move);
     event GameFinished(uint256 gameId, address winner, string result);
 
-    constructor() ERC721("RockPaperScissorsToken", "RPS") Ownable(msg.sender) {}
+    constructor(address _rockAddress, address _paperAddress, address _scissorAddress) ERC721("RockPaperScissorsToken", "RPS") Ownable(msg.sender) {
+        rockToken = Rock(_rockAddress);
+        paperToken = Paper(_paperAddress);
+        scissorToken = Scissor(_scissorAddress);
+    }
 
+    // Create a new game
     function createGame() external returns (uint) {
         games[gameId].player1 = msg.sender;
 
@@ -33,6 +45,7 @@ contract RockPaperScissors is ERC721, Ownable {
         return gameId++;
     }
 
+    // Join an existing game
     function joinGame(uint256 _gameId) external {
         require(games[_gameId].player1 != address(0), "Game does not exist");
         require(games[_gameId].player2 == address(0), "Game already has two players");
@@ -43,6 +56,7 @@ contract RockPaperScissors is ERC721, Ownable {
         emit GameJoined(_gameId, msg.sender);
     }
 
+    // Play the game
     function playGame(uint256 _move) external {
         require(games[gameId - 1].player1 != address(0), "Game does not exist");
         require(games[gameId - 1].played == false, "Game has already been played");
@@ -50,10 +64,28 @@ contract RockPaperScissors is ERC721, Ownable {
         require(msg.sender == games[gameId - 1].player1 || msg.sender == games[gameId - 1].player2, "You are not allowed to play this game");
 
         if (msg.sender == games[gameId - 1].player1) {
+            require(games[gameId - 1].player1Move == Move.None, "You have already selected a move");
+            if (_move == 1) {
+                require(rockToken.balanceOf(msg.sender) > 0, "You don't have the Rock token");
+            } else if (_move == 2) {
+                require(paperToken.balanceOf(msg.sender) > 0, "You don't have the Paper token");
+            } else if (_move == 3) {
+                require(scissorToken.balanceOf(msg.sender) > 0, "You don't have the Scissor token");
+            }
             games[gameId - 1].player1Move = Move(_move);
         } else {
+            require(games[gameId - 1].player2Move == Move.None, "You have already selected a move");
+            if (_move == 1) {
+                require(rockToken.balanceOf(msg.sender) > 0, "You don't have the Rock token");
+            } else if (_move == 2) {
+                require(paperToken.balanceOf(msg.sender) > 0, "You don't have the Paper token");
+            } else if (_move == 3) {
+                require(scissorToken.balanceOf(msg.sender) > 0, "You don't have the Scissor token");
+            }
             games[gameId - 1].player2Move = Move(_move);
         }
+
+        
 
         emit GamePlayed(gameId - 1, msg.sender, Move(_move));
 
@@ -79,14 +111,21 @@ contract RockPaperScissors is ERC721, Ownable {
 
             emit GameFinished(gameId - 1, winner, result);
 
-            
-
             games[gameId - 1].played = true;
         }
     }
 
-        function playAgainstMachine(uint256 _move) external {
+    // Play against the machine
+    function playAgainstMachine(uint256 _move) external {
         require(_move >= 1 && _move <= 3, "Invalid move");
+
+        if (_move == 1) {
+            require(rockToken.balanceOf(msg.sender) > 0, "You don't have the Rock token");
+        } else if (_move == 2) {
+            require(paperToken.balanceOf(msg.sender) > 0, "You don't have the Paper token");
+        } else if (_move == 3) {
+            require(scissorToken.balanceOf(msg.sender) > 0, "You don't have the Scissor token");
+        }
 
         Move playerMove = Move(_move);
         uint256 machineMove = random();
@@ -116,6 +155,7 @@ contract RockPaperScissors is ERC721, Ownable {
         emit GameFinished(0, winner, result);
     }
 
+    // Generate a random number
     function random() internal view returns (uint256) {
         return uint256(keccak256(abi.encodePacked(block.timestamp, block.difficulty))) % 3 + 1;
     }

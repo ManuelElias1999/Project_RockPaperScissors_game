@@ -6,7 +6,23 @@
 	"output": {
 		"abi": [
 			{
-				"inputs": [],
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_rockAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_paperAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_scissorAddress",
+						"type": "address"
+					}
+				],
 				"stateMutability": "nonpayable",
 				"type": "constructor"
 			},
@@ -482,6 +498,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "paperToken",
+				"outputs": [
+					{
+						"internalType": "contract Paper",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "uint256",
@@ -512,6 +541,19 @@
 				"name": "renounceOwnership",
 				"outputs": [],
 				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "rockToken",
+				"outputs": [
+					{
+						"internalType": "contract Rock",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -563,6 +605,19 @@
 				"name": "safeTransferFrom",
 				"outputs": [],
 				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "scissorToken",
+				"outputs": [
+					{
+						"internalType": "contract Scissor",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -933,12 +988,36 @@
 				"dweb:/ipfs/QmVBEei6aTnvYNZp2CHYVNKyZS4q1KkjANfY39WVXZXVoT"
 			]
 		},
-		"contracts/game.sol": {
-			"keccak256": "0xe1f14d2813d1cd1bc231d2bef245bb0b291f4ba7e234c171f042146452659027",
+		"contracts/Paper.sol": {
+			"keccak256": "0xf05012aebae695d38ff0cec40f6b0875c9416aa60d86f9ed99008ac156c5b869",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://38adf10bb8e685b585781b6921008fdf09017239db3a841a0138aaf2e6965abf",
-				"dweb:/ipfs/QmeEfSi8Xg4s6KbbRbG5BuRsJ8nmNU5kQvRcDnyiHeiN9n"
+				"bzz-raw://970c03d33dcf78b18c9790d9e0137615560b938b628f7093f5e99bfe5a56fdd6",
+				"dweb:/ipfs/QmYNUyp1AaETXQwvbWPGeLvaXGv1uJPBQL9esV1YSvoo4y"
+			]
+		},
+		"contracts/Rock.sol": {
+			"keccak256": "0x62348f008e7565347aa982314c2558286eaad5d4e1abdbd906ad2d88b76350b6",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://64130e2e114314df2f86f29a506b9c8b5067388773f03d758946d4405dfa3cd5",
+				"dweb:/ipfs/QmZVpUZBcMro5g38LCdAhJ4EwdecXNGdQs6Tp9gnXhoJ2P"
+			]
+		},
+		"contracts/Scissor.sol": {
+			"keccak256": "0x0c15fc95fe343487ec65e53b8368eb9b2eb4edb548aa98e31d4506e8c5767401",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://240d884fd2b16f759fd2ac941a3eecd4d08c0f0fce6bdeb144d25d100ae371a4",
+				"dweb:/ipfs/QmYW3sPzhP2JTeJdGqZRAPCG64bduo4bknkHQGzoMYzEyT"
+			]
+		},
+		"contracts/game.sol": {
+			"keccak256": "0x9d652b407e31a07f0a101bbdf84e33d6b3f3a6a429db604e102b247916d6bedf",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://5333493682d0f1f413b95965b04be89ebce633e1f1478df611136313ac8e9bc0",
+				"dweb:/ipfs/QmRvoukoVHeWLySBxmVQh3HenQRzwKX8YgJdN4gLuLwwWF"
 			]
 		}
 	},
