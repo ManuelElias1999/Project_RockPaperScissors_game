@@ -4,10 +4,8 @@ pragma solidity ^0.8.0;
 import "./Rock.sol";
 import "./Paper.sol";
 import "./Scissor.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract RockPaperScissors is ERC721, Ownable {
+contract RockPaperScissors {
     enum Move { None, Rock, Paper, Scissors }
 
     struct Game {
@@ -25,6 +23,8 @@ contract RockPaperScissors is ERC721, Ownable {
 
     uint randNo = 0;
 
+    uint randomMachine = 0;
+
     Rock public rockToken;
     Paper public paperToken;
     Scissor public scissorToken;
@@ -34,7 +34,7 @@ contract RockPaperScissors is ERC721, Ownable {
     event GamePlayed(uint256 gameId, address player, Move move);
     event GameFinished(uint256 gameId, address winner, string result);
 
-    constructor(address _rockAddress, address _paperAddress, address _scissorAddress) ERC721("RockPaperScissorsToken", "RPS") Ownable(msg.sender) {
+    constructor(address _rockAddress, address _paperAddress, address _scissorAddress) {
         rockToken = Rock(_rockAddress);
         paperToken = Paper(_paperAddress);
         scissorToken = Scissor(_scissorAddress);
@@ -89,8 +89,6 @@ contract RockPaperScissors is ERC721, Ownable {
             games[gameId - 1].player2Move = Move(_move);
         }
 
-        
-
         emit GamePlayed(gameId - 1, msg.sender, Move(_move));
 
         if (games[gameId - 1].player1Move != Move.None && games[gameId - 1].player2Move != Move.None) {
@@ -106,11 +104,9 @@ contract RockPaperScissors is ERC721, Ownable {
             ) {
                 winner = games[gameId - 1].player1; // Player 1 wins
                 result = "Player 1 wins!";
-                _safeMint(winner, gameId - 1);
             } else {
                 winner = games[gameId - 1].player2; // Player 2 wins
                 result = "Player 2 wins!";
-                _safeMint(winner, gameId - 1);
             }
 
             emit GameFinished(gameId - 1, winner, result);
@@ -121,6 +117,7 @@ contract RockPaperScissors is ERC721, Ownable {
 
     // Play against the machine
     function playAgainstMachine(uint256 _move) external {
+        require(randomMachine == 0, "Click on play again");
         require(_move >= 1 && _move <= 3, "Invalid move");
 
         if (_move == 1) {
@@ -149,23 +146,26 @@ contract RockPaperScissors is ERC721, Ownable {
         ) {
             winner = msg.sender; // Player wins
             result = "You win!";
-            _safeMint(msg.sender, 0);
         } else {
             winner = address(this); // Machine wins
             result = "You lose!";
-            _safeMint(address(this), 0);
         }
 
         emit GameFinished(0, winner, result);
     }
 
     // Generate a random number
-    function random() internal view returns (uint256) {
-        return uint256(keccak256(abi.encodePacked(block.timestamp, block.difficulty))) % 3 + 1;
+    function random() internal returns (uint256) {
+        randomMachine = uint256(keccak256(abi.encodePacked(block.timestamp, block.difficulty))) % 3 + 1;
+        return randomMachine;
+    }
+
+    function playAgainMachine() external {
+        randomMachine = 0;
     }
 
     // Play again in the same game
-    function playAgain() external {
+    function playAgainPlayers() external {
         require(games[gameId - 1].played == true, "Game is still in progress");
         require(msg.sender == games[gameId - 1].player1 || msg.sender == games[gameId - 1].player2, "You are not part of this game");
 
@@ -188,6 +188,4 @@ contract RockPaperScissors is ERC721, Ownable {
             emit GameCreated(gameId, msg.sender);
         }
     }
-
-
 }
